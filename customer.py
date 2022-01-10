@@ -17,11 +17,11 @@ class Table:
     def __str__(self):
         string_ans = ""
         if not self.is_empty:
-            string_ans += f"---> Customer: {self.name}\n"
-            string_ans += f"""     Sitting Time: {self.time_sit.strftime("%A - %d %b %Y - %I:%M %p")}\n"""
-            string_ans += f"     Duration: {self.time_t} minutes\n"
+            string_ans += f"\n---> Customer: {self.name}\n"
+            string_ans += f"""\n     Sitting Time: {self.time_sit.strftime("%A - %d %b %Y - %I:%M %p")}\n"""
+            string_ans += f"\n     Duration: {self.time_t} minutes\n"
         else:
-            string_ans = "EMPTY!"
+            string_ans = "\nEMPTY!\n"
 
         return string_ans
 
@@ -43,20 +43,20 @@ class Customer:
         self.foods = list()
 
     def order_food(self):
-        print("----------------------------------------------------------------------------\n")
-        self.name = input("Enter your name: ")
+        print("\n----------------------------------------------------------------------------\n")
+        self.name = input("---> Enter your name: ")
 
         try:
-            t = int(input("Enter the number of food you want to order: "))
+            t = int(input("\n---> Enter the number of food you want to order: "))
             for i in range(1, t + 1):
-                self.foods.append(input("Food [" + str(i) + "] : "))
+                self.foods.append(input("\n-> Food [" + str(i) + "] : "))
 
-            self.time_eat, self.time_prep = int(input("Enter your eating time: ")), int(
-                input("Enter the preparation time: "))
+            self.time_eat, self.time_prep = int(input("\n---> Enter your eating time: ")), int(
+                input("\n---> Enter the preparation time: "))
             self.time_t = self.time_eat + self.time_prep
 
         except ValueError:
-            print("Oops!  That was no valid number. Let's back to the menu")
+            print("\nOops!  That was no valid number. Let's back to the menu")
             os.system("cls")
             return
 
@@ -72,7 +72,7 @@ class Customer:
             waiting_time = final_time - datetime.timedelta(
                 now_time.day, now_time.second, now_time.microsecond, 0, now_time.minute, now_time.hour)
 
-            print("Dear {name} you can sit at table {table} after {time} hours and {min} minutes."
+            print("\n------> Dear {name} you can sit at table {table} after {time} hours and {min} minutes.\n"
                   .format(name=self.name, table=table_to_eat, time=waiting_time.hour,
                           min=waiting_time.minute))
 
@@ -82,7 +82,7 @@ class Customer:
             heapq.heappush(TABLES, (self.time_t + int(waiting_time.hour * 60) + waiting_time.minute, table_to_eat))
 
         else:
-            print("Dear {name}: Please sit at table: {table}".format(name=self.name, table=table_to_eat))
+            print("\n------> Dear {name}: Please sit at table: {table}\n".format(name=self.name, table=table_to_eat))
             TABLE_OVERVIEW[table_to_eat].time_sit = datetime.datetime.now()
             heapq.heappush(TABLES, (self.time_t, table_to_eat))
 
@@ -90,19 +90,21 @@ class Customer:
         TABLE_OVERVIEW[table_to_eat].time_t = self.time_t
         TABLE_OVERVIEW[table_to_eat].is_empty = False
 
-        input("Press Enter to go back to menu")
+        print("----------------------------------------------------------------------------------")
+        input("\nPress Enter to go back to menu")
         os.system("cls")
 
 
 if __name__ == '__main__':
 
     while True:
+        os.system("cls")
         print("\n-------------------- Welcome to Kharkhon Bashi Restaurant ---------------------\n")
-        print("1.Order Food")
-        print("2.Show Tables")
+        print("\n1. Order Food\n")
+        print("\n2. Show Tables\n")
 
         try:
-            selection = int(input("Please enter a number: "))
+            selection = int(input("\nPlease enter a number: "))
 
             if selection == 1:
                 new_customer = Customer()
@@ -110,11 +112,12 @@ if __name__ == '__main__':
 
             elif selection == 2:
                 for k, v in TABLE_OVERVIEW.items():
-                    print(f"Table {k}:")
+                    print("\n----------------------------------------------------------------------------------")
+                    print(f"\nTable {k}:")
                     print(v)
 
-                input("Press Enter to go back to menu")
+                input("\nPress Enter to go back to menu")
                 os.system("cls")
 
         except ValueError:
-            print("Oops!  That was no valid number.  Try again...")
+            print("\nOops!  That was no valid number.  Try again...")
