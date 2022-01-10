@@ -72,7 +72,7 @@ class Customer:
             waiting_time = final_time - datetime.timedelta(
                 now_time.day, now_time.second, now_time.microsecond, 0, now_time.minute, now_time.hour)
 
-            print("\n------> Dear {name} you can sit at table {table} after {time} hours and {min} minutes.\n"
+            print("\n------> Dear {name}, you can sit at table \"{table}\" after {time} hours and {min} minutes.\n"
                   .format(name=self.name, table=table_to_eat, time=waiting_time.hour,
                           min=waiting_time.minute))
 
@@ -82,7 +82,7 @@ class Customer:
             heapq.heappush(TABLES, (self.time_t + int(waiting_time.hour * 60) + waiting_time.minute, table_to_eat))
 
         else:
-            print("\n------> Dear {name}: Please sit at table: {table}\n".format(name=self.name, table=table_to_eat))
+            print("\n------> Dear {name}, Please sit at table: {table}\n".format(name=self.name, table=table_to_eat))
             TABLE_OVERVIEW[table_to_eat].time_sit = datetime.datetime.now()
             heapq.heappush(TABLES, (self.time_t, table_to_eat))
 
