@@ -1,7 +1,7 @@
 import os
 import heapq
 
-MAP_NUMBER = 6
+MAP_NUMBER = 0
 TABLE_NAMES = list()
 with open(os.path.join("Maps", "data" + str(MAP_NUMBER) + ".txt"), "r") as map_input:
     for line in map_input:
@@ -42,7 +42,10 @@ def table():
 
 
 class Table:
-    pass
+    def __init__(self, name, time_passed, time_sit, time_t):
+        self.name = name
+        self.time_sit = time_sit
+        self.time_t = time_t
 
 
 if __name__ == '__main__':
