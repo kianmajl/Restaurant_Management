@@ -65,7 +65,7 @@ class Customer:
             now_time = datetime.datetime.now()
 
             waiting_time = final_time - datetime.timedelta(
-                now_time.day, now_time.second, now_time.microsecond, 0, now_time.minute, now_time.hour)
+                now_time.day, 0, 0, 0, now_time.minute, now_time.hour)
 
             print("\n------> Dear {name} you can sit at table {table} after {time} hours and {min} minutes.\n"
                   .format(name=self.name, table=table_to_eat, time=waiting_time.hour,
@@ -107,12 +107,19 @@ if __name__ == '__main__':
                 print("\n----------------------------------------------------------------------------------")
                 for k, v in TABLE_OVERVIEW.items():
                     print(f"\nTable {k}:")
-                    for c in v:
-                        if c.time_sit + datetime.timedelta(minutes=c.time_t) < datetime.datetime.now():
-                            v.remove(c)
+                    to_delete = []
+
+                    for c in range(len(v)):
+                        if v[c].time_sit + datetime.timedelta(minutes=v[c].time_t) < datetime.datetime.now():
+                            to_delete.append(c)
+                            continue
                         else:
-                            print(c)
-                            print("\n---------")
+                            print(v[c])
+
+                    for ind_delete in to_delete:
+                        del v[ind_delete]
+
+                    print("\n----------------------------------------------------------------------------------")
 
                 input("\nPress Enter to go back to menu")
                 os.system("cls")
