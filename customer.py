@@ -68,7 +68,7 @@ class Customer:
             for ind in to_delete:
                 del table_data[ind]
 
-            heapq.heapify(TABLES)
+        heapq.heapify(TABLES)
 
         table_min_to_eat, table_name_to_eat = heapq.heappop(TABLES)
 
@@ -94,7 +94,8 @@ class Customer:
 
         else:
             print(
-                "\n------> Dear {name}: Please sit at table: {table}\n".format(name=self.name, table=table_name_to_eat))
+                "\n------> Dear {name}, you can sit at table \"{table}\"\n".format(name=self.name,
+                                                                                   table=table_name_to_eat))
             TABLE_OVERVIEW[table_name_to_eat].append(Table(self.name, datetime.datetime.now(), self.time_t))
             heapq.heappush(TABLES, (self.time_t, table_name_to_eat))
 
