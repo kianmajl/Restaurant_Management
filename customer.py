@@ -58,10 +58,17 @@ class Customer:
 
         for ind_table in range(NUMBER_OF_TABLES):
             table_data = TABLE_OVERVIEW[TABLES[ind_table][1]]
+            to_delete = list()
             for t in range(len(table_data)):
                 if table_data[t].time_sit + datetime.timedelta(minutes=table_data[t].time_t) < datetime.datetime.now():
                     time = TABLES[ind_table][0] - table_data[t].time_t
                     TABLES[ind_table] = (time, TABLES[ind_table][1])
+                    to_delete.append(t)
+
+            for ind in to_delete:
+                del table_data[ind]
+
+            heapq.heapify(TABLES)
 
         table_min_to_eat, table_name_to_eat = heapq.heappop(TABLES)
 
