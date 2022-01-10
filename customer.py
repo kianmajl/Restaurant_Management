@@ -67,7 +67,7 @@ class Customer:
             waiting_time = final_time - datetime.timedelta(
                 now_time.day, 0, 0, 0, now_time.minute, now_time.hour)
 
-            print("\n------> Dear {name} you can sit at table {table} after {time} hours and {min} minutes.\n"
+            print("\n------> Dear {name}, you can sit at table \"{table}\" after {time} hours and {min} minutes.\n"
                   .format(name=self.name, table=table_to_eat, time=waiting_time.hour,
                           min=waiting_time.minute))
 
