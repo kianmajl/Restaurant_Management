@@ -3,7 +3,7 @@ import heapq
 import datetime
 
 MAP_NUMBER = 0
-TABLES = []
+TABLES, NUMBER_OF_TABLES = [], 0
 TABLE_OVERVIEW = {}
 
 
@@ -27,6 +27,7 @@ with open(os.path.join("Maps", "data" + str(MAP_NUMBER) + ".txt"), "r") as map_i
             if ch.isalpha():
                 heapq.heappush(TABLES, (0, ch))
                 TABLE_OVERVIEW[ch] = []
+                NUMBER_OF_TABLES += 1
 
 
 class Customer:
@@ -55,12 +56,19 @@ class Customer:
             os.system("cls")
             return
 
-        table_to_eat = heapq.heappop(TABLES)[1]
+        for ind_table in range(NUMBER_OF_TABLES):
+            table_data = TABLE_OVERVIEW[TABLES[ind_table][1]]
+            for t in range(len(table_data)):
+                if table_data[t].time_sit + datetime.timedelta(minutes=table_data[t].time_t) < datetime.datetime.now():
+                    time = TABLES[ind_table][0] - table_data[t].time_t
+                    TABLES[ind_table] = (time, TABLES[ind_table][1])
 
-        if len(TABLE_OVERVIEW[table_to_eat]):
+        table_min_to_eat, table_name_to_eat = heapq.heappop(TABLES)
 
-            final_time = TABLE_OVERVIEW[table_to_eat][-1].time_sit + datetime.timedelta(
-                minutes=TABLE_OVERVIEW[table_to_eat][-1].time_t)
+        if len(TABLE_OVERVIEW[table_name_to_eat]):
+
+            final_time = TABLE_OVERVIEW[table_name_to_eat][-1].time_sit + datetime.timedelta(
+                minutes=TABLE_OVERVIEW[table_name_to_eat][-1].time_t)
 
             now_time = datetime.datetime.now()
 
@@ -68,20 +76,20 @@ class Customer:
                 now_time.day, 0, 0, 0, now_time.minute, now_time.hour)
 
             print("\n------> Dear {name}, you can sit at table \"{table}\" after {time} hours and {min} minutes.\n"
-                  .format(name=self.name, table=table_to_eat, time=waiting_time.hour,
+                  .format(name=self.name, table=table_name_to_eat, time=waiting_time.hour,
                           min=waiting_time.minute))
 
             time_sit = datetime.datetime.now() + datetime.timedelta(
                 hours=waiting_time.hour, minutes=waiting_time.minute, seconds=waiting_time.second)
 
-            TABLE_OVERVIEW[table_to_eat].append(Table(self.name, time_sit, self.time_t))
-
-            heapq.heappush(TABLES, (self.time_t + int(waiting_time.hour * 60) + waiting_time.minute, table_to_eat))
+            TABLE_OVERVIEW[table_name_to_eat].append(Table(self.name, time_sit, self.time_t))
+            heapq.heappush(TABLES, (self.time_t + table_min_to_eat, table_name_to_eat))
 
         else:
-            print("\n------> Dear {name}: Please sit at table: {table}\n".format(name=self.name, table=table_to_eat))
-            TABLE_OVERVIEW[table_to_eat].append(Table(self.name, datetime.datetime.now(), self.time_t))
-            heapq.heappush(TABLES, (self.time_t, table_to_eat))
+            print(
+                "\n------> Dear {name}: Please sit at table: {table}\n".format(name=self.name, table=table_name_to_eat))
+            TABLE_OVERVIEW[table_name_to_eat].append(Table(self.name, datetime.datetime.now(), self.time_t))
+            heapq.heappush(TABLES, (self.time_t, table_name_to_eat))
 
         print("----------------------------------------------------------------------------------")
         input("\nPress Enter to go back to menu")
@@ -107,17 +115,10 @@ if __name__ == '__main__':
                 print("\n----------------------------------------------------------------------------------")
                 for k, v in TABLE_OVERVIEW.items():
                     print(f"\nTable {k}:")
-                    to_delete = []
 
                     for c in range(len(v)):
-                        if v[c].time_sit + datetime.timedelta(minutes=v[c].time_t) < datetime.datetime.now():
-                            to_delete.append(c)
-                            continue
-                        else:
+                        if not v[c].time_sit + datetime.timedelta(minutes=v[c].time_t) < datetime.datetime.now():
                             print(v[c])
-
-                    for ind_delete in to_delete:
-                        del v[ind_delete]
 
                     print("\n----------------------------------------------------------------------------------")
 
