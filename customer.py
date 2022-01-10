@@ -8,21 +8,16 @@ TABLE_OVERVIEW = {}
 
 
 class Table:
-    def __init__(self, name, time_sit, time_t, is_empty):
+    def __init__(self, name="", time_sit=datetime.datetime.now(), time_t=0):
         self.name = name
         self.time_sit = time_sit
         self.time_t = time_t
-        self.is_empty = is_empty
 
     def __str__(self):
         string_ans = ""
-        if not self.is_empty:
-            string_ans += f"\n---> Customer: {self.name}\n"
-            string_ans += f"""\n     Sitting Time: {self.time_sit.strftime("%A - %d %b %Y - %I:%M %p")}\n"""
-            string_ans += f"\n     Duration: {self.time_t} minutes\n"
-        else:
-            string_ans = "\nEMPTY!\n"
-
+        string_ans += f"\n---> Customer: {self.name}\n"
+        string_ans += f"\n     Duration: {self.time_t} minutes\n"
+        string_ans += f"""\n     Sitting Time: {self.time_sit.strftime("%A - %d %b %Y - %I:%M %p")}\n"""
         return string_ans
 
 
@@ -31,7 +26,7 @@ with open(os.path.join("Maps", "data" + str(MAP_NUMBER) + ".txt"), "r") as map_i
         for ch in line:
             if ch.isalpha():
                 heapq.heappush(TABLES, (0, ch))
-                TABLE_OVERVIEW[ch] = Table("EMPTY!", 0, 0, True)
+                TABLE_OVERVIEW[ch] = []
 
 
 class Customer:
@@ -56,16 +51,16 @@ class Customer:
             self.time_t = self.time_eat + self.time_prep
 
         except ValueError:
-            print("\nOops!  That was no valid number. Let's back to the menu")
+            input("\nOops!  That was no valid number. Let's back to the menu")
             os.system("cls")
             return
 
         table_to_eat = heapq.heappop(TABLES)[1]
 
-        if not TABLE_OVERVIEW[table_to_eat].is_empty:
+        if len(TABLE_OVERVIEW[table_to_eat]):
 
-            final_time = TABLE_OVERVIEW[table_to_eat].time_sit + datetime.timedelta(
-                minutes=TABLE_OVERVIEW[table_to_eat].time_t)
+            final_time = TABLE_OVERVIEW[table_to_eat][-1].time_sit + datetime.timedelta(
+                minutes=TABLE_OVERVIEW[table_to_eat][-1].time_t)
 
             now_time = datetime.datetime.now()
 
@@ -76,19 +71,17 @@ class Customer:
                   .format(name=self.name, table=table_to_eat, time=waiting_time.hour,
                           min=waiting_time.minute))
 
-            TABLE_OVERVIEW[table_to_eat].time_sit = datetime.datetime.now() + datetime.timedelta(
+            time_sit = datetime.datetime.now() + datetime.timedelta(
                 hours=waiting_time.hour, minutes=waiting_time.minute, seconds=waiting_time.second)
+
+            TABLE_OVERVIEW[table_to_eat].append(Table(self.name, time_sit, self.time_t))
 
             heapq.heappush(TABLES, (self.time_t + int(waiting_time.hour * 60) + waiting_time.minute, table_to_eat))
 
         else:
-            print("\n------> Dear {name}, Please sit at table: {table}\n".format(name=self.name, table=table_to_eat))
-            TABLE_OVERVIEW[table_to_eat].time_sit = datetime.datetime.now()
+            print("\n------> Dear {name}: Please sit at table: {table}\n".format(name=self.name, table=table_to_eat))
+            TABLE_OVERVIEW[table_to_eat].append(Table(self.name, datetime.datetime.now(), self.time_t))
             heapq.heappush(TABLES, (self.time_t, table_to_eat))
-
-        TABLE_OVERVIEW[table_to_eat].name = self.name
-        TABLE_OVERVIEW[table_to_eat].time_t = self.time_t
-        TABLE_OVERVIEW[table_to_eat].is_empty = False
 
         print("----------------------------------------------------------------------------------")
         input("\nPress Enter to go back to menu")
@@ -111,13 +104,18 @@ if __name__ == '__main__':
                 new_customer.order_food()
 
             elif selection == 2:
+                print("\n----------------------------------------------------------------------------------")
                 for k, v in TABLE_OVERVIEW.items():
-                    print("\n----------------------------------------------------------------------------------")
                     print(f"\nTable {k}:")
-                    print(v)
+                    for c in v:
+                        if c.time_sit + datetime.timedelta(minutes=c.time_t) < datetime.datetime.now():
+                            v.remove(c)
+                        else:
+                            print(c)
+                            print("\n---------")
 
                 input("\nPress Enter to go back to menu")
                 os.system("cls")
 
         except ValueError:
-            print("\nOops!  That was no valid number.  Try again...")
+            input("\nOops!  That was no valid number.  Try again...")
