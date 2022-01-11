@@ -58,6 +58,8 @@ if __name__ == "__main__":
 
     initialize()
 
+    MAIN_FOOD_PREP = dict(filter(lambda l: l in FOOD_MENU, FOOD_PREP.items()))
+
     while True:
         os.system("cls")
         print("\n-------------------- Welcome to Kitchen of Kharkhon Bashi Restaurant ---------------------\n")
@@ -66,7 +68,8 @@ if __name__ == "__main__":
         print("\n3. Show Food Recipes\n")
         print("\n4. Add a requirement to the food\n")
         print("\n5. Get the food with the most time needed\n")
-        print("\n6. Get the food with the most requirements\n")
+        print("\n6. Get the food with the least time needed\n")
+        print("\n7. Get the food with the most requirements\n")
 
         print("\n-------------------------------------------------------------------------------------------\n")
 
@@ -84,7 +87,10 @@ if __name__ == "__main__":
 
             elif selection == 3:
                 for fdr in FOOD_MENU:
-                    print(fdr, *FOODS_RECIPES[fdr].static_order())
+                    try:
+                        print(fdr, *FOODS_RECIPES[fdr].static_order())
+                    except graphlib.CycleError:
+                        print("Cycle detected!")
 
                 input("\nPress Enter to go back to menu")
 
@@ -99,13 +105,18 @@ if __name__ == "__main__":
                 input("\nPress Enter to go back to menu")
 
             elif selection == 5:
-                print(max(FOOD_PREP, key=lambda x: FOOD_PREP[x]))
+                maximum = max(MAIN_FOOD_PREP, key=MAIN_FOOD_PREP.get)
+                print(maximum, MAIN_FOOD_PREP[maximum])
 
                 input("\nPress Enter to go back to menu")
 
             elif selection == 6:
-                pass
+                print(min(FOOD_PREP, key=lambda x: FOOD_PREP[x]))
 
+                input("\nPress Enter to go back to menu")
+
+            elif selection == 7:
+                pass
 
         except ValueError:
             input("\nOops!  That was no valid number.  Try again...")
