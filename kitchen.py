@@ -58,7 +58,7 @@ if __name__ == "__main__":
 
     initialize()
 
-    MAIN_FOOD_PREP = dict(filter(lambda l: l in FOOD_MENU, FOOD_PREP.items()))
+    MAIN_FOOD_PREP = dict(filter(lambda l: l[0] in FOOD_MENU, FOOD_PREP.items()))
 
     while True:
         os.system("cls")
