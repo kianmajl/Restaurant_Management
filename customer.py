@@ -142,7 +142,7 @@ class Customer:
             # add Table object to dict
             TABLE_OVERVIEW[table_name_to_eat].append(Table(self.name, datetime.datetime.now(), self.time_t))
 
-            # add Table object ro hash queue
+            # add Table object to hash queue
             heapq.heappush(TABLES, (self.time_t, table_name_to_eat))
 
         print("----------------------------------------------------------------------------------")
