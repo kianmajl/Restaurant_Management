@@ -107,16 +107,18 @@ if __name__ == "__main__":
             elif selection == 5:
                 maximum = max(MAIN_FOOD_PREP, key=MAIN_FOOD_PREP.get)
                 print(maximum, MAIN_FOOD_PREP[maximum])
-
                 input("\nPress Enter to go back to menu")
 
             elif selection == 6:
-                print(min(FOOD_PREP, key=lambda x: FOOD_PREP[x]))
-
+                minimum = min(MAIN_FOOD_PREP, key=MAIN_FOOD_PREP.get)
+                print(minimum, MAIN_FOOD_PREP[minimum])
                 input("\nPress Enter to go back to menu")
 
             elif selection == 7:
-                pass
+                maximum = max(FOODS_RECIPES.items(), key=lambda x: len(tuple(x[1].static_order())))
+                print(maximum[0])
+                print(*FOODS_RECIPES[maximum[0]].static_order())
+                input("\nPress Enter to go back to menu")
 
         except ValueError:
             input("\nOops!  That was no valid number.  Try again...")
