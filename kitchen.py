@@ -11,7 +11,7 @@ food_menu = []
 # {all recipes, preparation time}
 food_prep = {}
 
-FILE_NAME = "TestDataKianAdrina"
+FILE_NAME = "TestData"
 
 
 def initialize():
@@ -63,6 +63,8 @@ def start():
 if __name__ == "__main__":
 
     start()
+    os.system("cls")
+    print("Please wait for seconds")
     main_food_prep = dict(filter(lambda l: l[0] in food_menu, food_prep.items()))
     main_food_rec = dict(filter(lambda l: l[0] in food_menu, foods_recipes.items()))
 
@@ -142,6 +144,7 @@ if __name__ == "__main__":
                 main_food_prep.clear()
                 main_food_rec.clear()
                 start()
+                print("Please wait for seconds")
                 main_food_prep = dict(filter(lambda l: l[0] in food_menu, food_prep.items()))
                 main_food_rec = dict(filter(lambda l: l[0] in food_menu, foods_recipes.items()))
 
