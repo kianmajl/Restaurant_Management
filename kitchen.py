@@ -53,7 +53,7 @@ def initialize():
 
 def start():
     os.system("cls")
-    print("Initializing... Please Wait")
+    print("Loading... Please Wait")
     start_time = time.time()
     initialize()
     print(f"File Loaded!\nTime = {time.time() - start_time}s")
@@ -67,7 +67,13 @@ if __name__ == "__main__":
     main_food_rec = dict(filter(lambda l: l[0] in food_menu, foods_recipes.items()))
 
     while True:
+
         os.system("cls")
+
+        if not len(food_menu):
+            print("There's no food in our menu!")
+            exit(0)
+
         print("\n-------------------- Welcome to Kitchen of Kharkhon Bashi Restaurant ---------------------\n")
         print("\n1. Show Foods\n")
         print("\n2. Delete a Food\n")
