@@ -5,16 +5,18 @@ from collections import defaultdict
 import copy
 
 # {food name, its graph(dictionary:name to requirement)}
-FOODS_RECIPES = {}
+foods_recipes = {}
 # list all foods
-FOOD_MENU = []
+food_menu = []
 # {all recipes, preparation time}
-FOOD_PREP = {}
+food_prep = {}
+
+FILE_NAME = "TestDataKianAdrina"
 
 
 def initialize():
     graph = defaultdict(set)
-    with open(os.path.join("Food Recipes", "TestDataKianAdrina.txt"), "r") as food_input:
+    with open(os.path.join("Food Recipes", FILE_NAME + ".txt"), "r") as food_input:
         new_food = False
         for line in food_input:
             line = line.strip()
@@ -24,13 +26,13 @@ def initialize():
                 continue
 
             if line == "End of instructions":
-                FOODS_RECIPES[FOOD_MENU[-1]] = copy.deepcopy(graph)
+                foods_recipes[food_menu[-1]] = copy.deepcopy(graph)
                 graph.clear()
                 continue
 
             if new_food:
                 new_food = False
-                FOOD_MENU.append(line)
+                food_menu.append(line)
 
             else:
                 data, temp_food = line.split(), list()
@@ -44,23 +46,25 @@ def initialize():
                         time_prep += int(food)
 
                 for tp in temp_food:
-                    time_prep += FOOD_PREP.get(tp, 0)
+                    time_prep += food_prep.get(tp, 0)
 
-                FOOD_PREP[data[0]] = time_prep
+                food_prep[data[0]] = time_prep
 
 
-if __name__ == "__main__":
-
+def start():
     os.system("cls")
     print("Initializing... Please Wait")
     start_time = time.time()
     initialize()
-
-    main_food_prep = dict(filter(lambda l: l[0] in FOOD_MENU, FOOD_PREP.items()))
-    main_food_rec = dict(filter(lambda l: l[0] in FOOD_MENU, FOODS_RECIPES.items()))
-
     print(f"File Loaded!\nTime = {time.time() - start_time}s")
     input("\nPress Enter to continue")
+
+
+if __name__ == "__main__":
+
+    start()
+    main_food_prep = dict(filter(lambda l: l[0] in food_menu, food_prep.items()))
+    main_food_rec = dict(filter(lambda l: l[0] in food_menu, foods_recipes.items()))
 
     while True:
         os.system("cls")
@@ -79,33 +83,76 @@ if __name__ == "__main__":
             selection = int(input("\nPlease enter a number: "))
 
             if selection == 1:
-                for foods in FOOD_MENU:
-                    print(foods, FOOD_PREP[foods])
+                for foods in food_menu:
+                    print(foods, food_prep[foods])
 
                 input("\nPress Enter to go back to menu")
 
             elif selection == 2:
-                pass
+                for foods in food_menu:
+                    print(foods, food_prep[foods])
+
+                food_name_to_delete = input("Enter a food name to delete: ")
+
+                with open(os.path.join("Food Recipes", FILE_NAME + ".txt"), "r") as src, \
+                        open(os.path.join("Food Recipes", FILE_NAME + "edited.txt"), "w") as dest:
+
+                    new_food_src, food_found = False, False
+                    for line_src in src:
+                        line_src = line_src.strip()
+
+                        if line_src == "New Food:":
+                            new_food_src = True
+                            continue
+
+                        if line_src == "End of instructions":
+                            if not food_found:
+                                dest.write("End of instructions\n")
+                            food_found = not food_found
+                            continue
+
+                        if new_food_src:
+                            new_food_src = False
+                            if line_src == food_name_to_delete:
+                                food_found = True
+                            else:
+                                dest.write("New Food:\n")
+                                dest.write(line_src + "\n")
+
+                        else:
+                            if not food_found:
+                                dest.write(line_src + "\n")
+
+                os.remove(os.path.join("Food Recipes", FILE_NAME + ".txt"))
+                os.rename(os.path.join("Food Recipes", FILE_NAME + "edited.txt"),
+                          os.path.join("Food Recipes", FILE_NAME + ".txt"))
+
+                start()
+                foods_recipes.clear()
+                food_menu.clear()
+                food_prep.clear()
+                main_food_prep = dict(filter(lambda l: l[0] in food_menu, food_prep.items()))
+                main_food_rec = dict(filter(lambda l: l[0] in food_menu, foods_recipes.items()))
 
             elif selection == 3:
-                for fdr in FOOD_MENU:
+                for fdr in food_menu:
                     try:
-                        print(fdr, *graphlib.TopologicalSorter(FOODS_RECIPES[fdr]).static_order())
+                        print(fdr, *graphlib.TopologicalSorter(foods_recipes[fdr]).static_order())
                     except graphlib.CycleError as gce:
                         print("Cycle detected!", gce)
 
                 input("\nPress Enter to go back to menu")
 
             elif selection == 4:
-                for foods in FOOD_MENU:
-                    print(foods, FOOD_PREP[foods])
+                for foods in food_menu:
+                    print(foods, food_prep[foods])
 
                 food_name = input("Enter a food name: ")
                 req = input("Enter a line of requirement: ").split()
-                FOODS_RECIPES[food_name][req[0]].add(req[1])
+                foods_recipes[food_name][req[0]].add(req[1])
                 tmp = int(req[2])
-                tmp += FOOD_PREP.get(req[1], 0)
-                FOOD_PREP[req[0]] += tmp
+                tmp += food_prep.get(req[1], 0)
+                food_prep[req[0]] += tmp
                 print("Successfully added!")
                 input("\nPress Enter to go back to menu")
 
@@ -136,7 +183,7 @@ if __name__ == "__main__":
 
                 for name in maximum_rec_names:
                     print(name)
-                    print(*graphlib.TopologicalSorter(FOODS_RECIPES[name]).static_order())
+                    print(*graphlib.TopologicalSorter(foods_recipes[name]).static_order())
 
                 input("\nPress Enter to go back to menu")
 
