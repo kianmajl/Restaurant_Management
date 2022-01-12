@@ -133,10 +133,12 @@ if __name__ == "__main__":
                 os.rename(os.path.join("Food Recipes", FILE_NAME + "edited.txt"),
                           os.path.join("Food Recipes", FILE_NAME + ".txt"))
 
-                start()
                 foods_recipes.clear()
                 food_menu.clear()
                 food_prep.clear()
+                main_food_prep.clear()
+                main_food_rec.clear()
+                start()
                 main_food_prep = dict(filter(lambda l: l[0] in food_menu, food_prep.items()))
                 main_food_rec = dict(filter(lambda l: l[0] in food_menu, foods_recipes.items()))
 
