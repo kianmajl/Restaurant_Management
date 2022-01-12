@@ -157,11 +157,16 @@ if __name__ == "__main__":
 
                 food_name = input("Enter a food name: ")
                 req = input("Enter a line of requirement: ").split()
-                foods_recipes[food_name][req[0]].add(req[1])
-                tmp = int(req[2])
-                tmp += food_prep.get(req[1], 0)
-                food_prep[req[0]] += tmp
-                print("Successfully added!")
+                try:
+                    foods_recipes[food_name][req[0]].add(req[1])
+                    tmp = int(req[2])
+                    tmp += food_prep.get(req[1], 0)
+                    food_prep[req[0]] += tmp
+                    print("Successfully added!")
+
+                except KeyError as ke:
+                    print(ke, "Not found!!")
+
                 input("\nPress Enter to go back to menu")
 
             elif selection == 5:
