@@ -103,6 +103,9 @@ if __name__ == "__main__":
                 food_name = input("Enter a food name: ")
                 req = input("Enter a line of requirement: ").split()
                 FOODS_RECIPES[food_name][req[0]].add(req[1])
+                tmp = int(req[2])
+                tmp += FOOD_PREP.get(req[1], 0)
+                FOOD_PREP[req[0]] += tmp
                 print("Successfully added!")
                 input("\nPress Enter to go back to menu")
 
