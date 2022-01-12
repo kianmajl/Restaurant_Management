@@ -71,7 +71,7 @@ if __name__ == "__main__":
         os.system("cls")
 
         if not len(food_menu):
-            print("There's no food in our menu!")
+            print("There's no food in our menu!\nThanks for coming :)")
             exit(0)
 
         print("\n-------------------- Welcome to Kitchen of Kharkhon Bashi Restaurant ---------------------\n")
@@ -99,6 +99,10 @@ if __name__ == "__main__":
                     print(foods, food_prep[foods])
 
                 food_name_to_delete = input("Enter a food name to delete: ")
+
+                if food_name_to_delete not in food_menu:
+                    input("The name food you entered is not in menu!")
+                    continue
 
                 with open(os.path.join("Food Recipes", FILE_NAME + ".txt"), "r") as src, \
                         open(os.path.join("Food Recipes", FILE_NAME + "edited.txt"), "w") as dest:
