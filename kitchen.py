@@ -1,7 +1,10 @@
 import os
+import time
 import graphlib
+from collections import defaultdict
+import copy
 
-# {food name, its graph}
+# {food name, its graph(dictionary:name to requirement)}
 FOODS_RECIPES = {}
 # list all foods
 FOOD_MENU = []
@@ -10,7 +13,7 @@ FOOD_PREP = {}
 
 
 def initialize():
-    graph = graphlib.TopologicalSorter()
+    graph = defaultdict(set)
     with open(os.path.join("Food Recipes", "TestDataKianAdrina.txt"), "r") as food_input:
         new_food = False
         for line in food_input:
@@ -21,10 +24,8 @@ def initialize():
                 continue
 
             if line == "End of instructions":
-                # FOODS_RECIPES.append(graph)
-                FOODS_RECIPES[FOOD_MENU[-1]] = graph
-                del graph
-                graph = graphlib.TopologicalSorter()
+                FOODS_RECIPES[FOOD_MENU[-1]] = copy.deepcopy(graph)
+                graph.clear()
                 continue
 
             if new_food:
@@ -37,7 +38,7 @@ def initialize():
 
                 for food in data[1:]:
                     if not food.isdigit():
-                        graph.add(data[0], food)
+                        graph[data[0]].add(food)
                         temp_food.append(food)
                     else:
                         time_prep += int(food)
@@ -47,18 +48,19 @@ def initialize():
 
                 FOOD_PREP[data[0]] = time_prep
 
-    # for k, v in FOOD_PREP.items():
-    #     print(k, v)
-    #
-    # for food_rep in FOODS_RECIPES:
-    #     print(*food_rep.static_order())
-
 
 if __name__ == "__main__":
 
+    os.system("cls")
+    print("Initializing... Please Wait")
+    start_time = time.time()
     initialize()
 
-    MAIN_FOOD_PREP = dict(filter(lambda l: l[0] in FOOD_MENU, FOOD_PREP.items()))
+    main_food_prep = dict(filter(lambda l: l[0] in FOOD_MENU, FOOD_PREP.items()))
+    main_food_rec = dict(filter(lambda l: l[0] in FOOD_MENU, FOODS_RECIPES.items()))
+
+    print(f"File Loaded!\nTime = {time.time() - start_time}s")
+    input("\nPress Enter to continue")
 
     while True:
         os.system("cls")
@@ -88,9 +90,9 @@ if __name__ == "__main__":
             elif selection == 3:
                 for fdr in FOOD_MENU:
                     try:
-                        print(fdr, *FOODS_RECIPES[fdr].static_order())
-                    except graphlib.CycleError:
-                        print("Cycle detected!")
+                        print(fdr, *graphlib.TopologicalSorter(FOODS_RECIPES[fdr]).static_order())
+                    except graphlib.CycleError as gce:
+                        print("Cycle detected!", gce)
 
                 input("\nPress Enter to go back to menu")
 
@@ -99,25 +101,40 @@ if __name__ == "__main__":
                     print(foods, FOOD_PREP[foods])
 
                 food_name = input("Enter a food name: ")
-                req = input("Enter a line of requirement").split()
-                FOODS_RECIPES[food_name].add(req[0], req[1])
+                req = input("Enter a line of requirement: ").split()
+                FOODS_RECIPES[food_name][req[0]].add(req[1])
                 print("Successfully added!")
                 input("\nPress Enter to go back to menu")
 
             elif selection == 5:
-                maximum = max(MAIN_FOOD_PREP, key=MAIN_FOOD_PREP.get)
-                print(maximum, MAIN_FOOD_PREP[maximum])
+                maximum = max(main_food_prep, key=main_food_prep.get)
+                print(maximum, main_food_prep[maximum])
                 input("\nPress Enter to go back to menu")
 
             elif selection == 6:
-                minimum = min(MAIN_FOOD_PREP, key=MAIN_FOOD_PREP.get)
-                print(minimum, MAIN_FOOD_PREP[minimum])
+                minimum = min(main_food_prep, key=main_food_prep.get)
+                print(minimum, main_food_prep[minimum])
                 input("\nPress Enter to go back to menu")
 
             elif selection == 7:
-                maximum = max(FOODS_RECIPES.items(), key=lambda x: len(tuple(x[1].static_order())))
-                print(maximum[0])
-                print(*FOODS_RECIPES[maximum[0]].static_order())
+
+                maximum_rec_count, maximum_rec_names = 0, []
+
+                for k, v in main_food_rec.items():
+                    len_v = len(tuple(graphlib.TopologicalSorter(v).static_order()))
+
+                    if len_v > maximum_rec_count:
+                        maximum_rec_names.clear()
+                        maximum_rec_names.append(k)
+                        maximum_rec_count = len_v
+
+                    elif len_v == maximum_rec_count:
+                        maximum_rec_names.append(k)
+
+                for name in maximum_rec_names:
+                    print(name)
+                    print(*graphlib.TopologicalSorter(FOODS_RECIPES[name]).static_order())
+
                 input("\nPress Enter to go back to menu")
 
         except ValueError:
