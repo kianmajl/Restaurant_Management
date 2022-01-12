@@ -108,13 +108,12 @@ if __name__ == "__main__":
                         line_src = line_src.strip()
 
                         if line_src == "New Food:":
-                            new_food_src = True
+                            new_food_src, food_found = True, False
                             continue
 
                         if line_src == "End of instructions":
                             if not food_found:
                                 dest.write("End of instructions\n")
-                            food_found = not food_found
                             continue
 
                         if new_food_src:
