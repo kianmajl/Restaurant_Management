@@ -1,6 +1,7 @@
 class Person(object):
-    def __init__(self, key):
+    def __init__(self, key, name=""):
         self.key = key
+        self.name = name
         self.right = None
         self.left = None
         self.height = 1
@@ -40,15 +41,15 @@ class AVLTree(object):
         y.height = 1 + max(AVLTree.get_height(y.left), AVLTree.get_height(y.right))
         return y
 
-    def insert(self, root, key):
+    def insert(self, root, key, name):
         if not root:
-            return Person(key)
+            return Person(key, name)
 
         elif key < root.key:
-            root.left = self.insert(root.left, key)
+            root.left = self.insert(root.left, key, name)
 
         else:
-            root.right = self.insert(root.right, key)
+            root.right = self.insert(root.right, key, name)
 
         root.height = max(self.get_height(root.left), self.get_height(root.right)) + 1
 
@@ -56,23 +57,42 @@ class AVLTree(object):
 
         if balance_factor > 1:
             if key >= root.left.key:
-                root.left = self.leftRotate(root.left)
-            return self.rightRotate(root)
+                root.left = self.left_rotate(root.left)
+            return self.right_rotate(root)
 
         if balance_factor < -1:
             if key <= root.right.key:
-                root.right = self.rightRotate(root.right)
-            return self.leftRotate(root)
+                root.right = self.right_rotate(root.right)
+            return self.left_rotate(root)
 
         return root
 
+    @staticmethod
+    def search(root, key):
+        if not root:
+            return "Not Found!"
+
+        if root.key == key:
+            return root.name
+
+        elif key < root.key:
+            return AVLTree.search(root.left, key)
+
+        else:
+            return AVLTree.search(root.right, key)
+
 
 if __name__ == "__main__":
-    customers, root_tree = AVLTree(), None
+    customers, root_tree, customers_num = AVLTree(), None, dict()
 
-    root_tree = customers.insert(root_tree, 18)
-    root_tree = customers.insert(root_tree, 24)
-    root_tree = customers.insert(root_tree, 1)
-    root_tree = customers.insert(root_tree, 20)
+    while True:
+        orders = input("Please Enter Your Order: ").split()
 
-    orders = input("Please Enter Your Order: ")
+        if orders[0] == "Insert":
+            customers_num[orders[1]] = int(orders[2])
+            # noinspection PyTypeChecker
+            root_tree = customers.insert(root_tree, int(orders[2]), orders[1])
+
+        elif orders[0] == "Search":
+            # noinspection PyTypeChecker
+            print(customers.search(root_tree, int(orders[1])))
