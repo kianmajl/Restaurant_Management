@@ -158,6 +158,7 @@ if __name__ == '__main__':
         print("\n-------------------- Welcome to Kharkhon Bashi Restaurant ---------------------\n")
         print("\n1. Order Food\n")
         print("\n2. Show Tables\n")
+        print("\n3. Exit\n")
 
         try:
             selection = int(input("\nPlease enter a number: "))
@@ -180,6 +181,11 @@ if __name__ == '__main__':
 
                 input("\nPress Enter to go back to menu")
                 os.system("cls")
+
+            elif selection == 3:
+                print("GoodBye!")
+                print("by: Adrina & Kian")
+                exit(0)
 
         except ValueError:
             input("\nOops!  That was no valid number.  Try again...")
