@@ -84,7 +84,7 @@ if __name__ == "__main__":
         print("\n5. Get the food with the most time needed\n")
         print("\n6. Get the food with the least time needed\n")
         print("\n7. Get the food with the most requirements\n")
-
+        print("\n8. Exit\n")
         print("\n-------------------------------------------------------------------------------------------\n")
 
         try:
@@ -205,6 +205,11 @@ if __name__ == "__main__":
                     print(*graphlib.TopologicalSorter(foods_recipes[name]).static_order())
 
                 input("\nPress Enter to go back to menu")
+
+            elif selection == 8:
+                print("GoodBye!")
+                print("by: Kian & Adrina")
+                exit(0)
 
         except ValueError:
             input("\nOops!  That was no valid number.  Try again...")
