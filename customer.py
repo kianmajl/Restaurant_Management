@@ -80,13 +80,16 @@ class Customer:
             for f, t in foods.items():
                 print("{food}\t\t{times}".format(food=f, times=t))
 
-            t = int(input("\n---> Enter the number of food you want to order: "))
-
-            self.time_prep = 0
+            self.time_prep, t = 0, 0
 
             try:
-                for i in range(t):
-                    self.time_prep += foods[input(f"Enter Food {i + 1} : ")]
+                print()
+                food_name = input(f"Enter Food {t} : ")
+                while food_name != "Finish":
+                    self.time_prep += foods[food_name]
+                    t += 1
+                    food_name = input(f"Enter Food {t} : ")
+
             except KeyError:
                 print("Enter a valid food!")
                 os.system("cls")
