@@ -60,8 +60,7 @@ def start():
     input("\nPress Enter to continue")
 
 
-if __name__ == "__main__":
-
+def main():
     start()
     os.system("cls")
     print("Please wait for seconds")
@@ -213,3 +212,7 @@ if __name__ == "__main__":
 
         except ValueError:
             input("\nOops!  That was no valid number.  Try again...")
+
+
+if __name__ == "__main__":
+    main()
