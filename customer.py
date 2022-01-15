@@ -11,7 +11,7 @@ global number_of_tables
 # situation of reservation {table name: list(Table)}
 table_overview = {}
 
-foods = dict()
+global foods
 
 
 # class for table situation and its customers
