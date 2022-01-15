@@ -11,7 +11,7 @@ global number_of_tables
 # situation of reservation {table name: list(Table)}
 table_overview = {}
 
-foods = dict()
+global foods
 
 
 # class for table situation and its customers
@@ -76,7 +76,7 @@ class Customer:
         try:
             # get food
             print("Food name\tTime")
-            for f, t in foods:
+            for f, t in foods.items():
                 print("{food}\t{times}".format(food=f, times=t))
 
             # t = int(input("\n---> Enter the number of food you want to order: "))
