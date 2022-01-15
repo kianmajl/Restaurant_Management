@@ -13,10 +13,14 @@ if __name__ == "__main__":
             selection = int(input("\n Please enter a number: "))
 
             if selection == 1:
-                kitchen.main()
+                kitchen.start()
+                main_food_prep = dict(filter(lambda l: l[0] in kitchen.food_menu, kitchen.food_prep.items()))
+                customer.start(main_food_prep)
+                customer.main()
 
             elif selection == 2:
-                kitchen.main()
+                pass
+                # kitchen.main()
 
         except ValueError:
             input("\nOops!  That was no valid number.  Try again...")

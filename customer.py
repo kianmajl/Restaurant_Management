@@ -11,7 +11,7 @@ global number_of_tables
 # situation of reservation {table name: list(Table)}
 table_overview = {}
 
-global foods
+foods = dict()
 
 
 # class for table situation and its customers
@@ -37,7 +37,7 @@ class Table:
 def start(food_data=None):
     # read our table names from file and add them to a heap queue
     if food_data is None:
-        food_data = list()
+        food_data = dict()
 
     global number_of_tables
     global foods
@@ -75,6 +75,10 @@ class Customer:
 
         try:
             # get food
+            print("Food name\tTime")
+            for f, t in foods:
+                print("{food}\t{times}".format(food=f, times=t))
+
             # t = int(input("\n---> Enter the number of food you want to order: "))
             self.time_eat, self.time_prep = int(input("\n---> Enter your eating time: ")), int(
                 input("\n---> Enter the preparation time: "))
@@ -156,13 +160,14 @@ class Customer:
         os.system("cls")
 
 
-if __name__ == '__main__':
-
+def main():
     # start
     os.system("cls")
-    print("Loading... Please Wait")
+    print("Loading Restaurant Map... Please Wait")
     start_time = time.time()
-    start()
+    if not foods:
+        start()
+
     print(f"File Loaded!\nTime = {time.time() - start_time}s")
     input("\nPress Enter to continue")
 
@@ -202,3 +207,7 @@ if __name__ == '__main__':
 
         except ValueError:
             input("\nOops!  That was no valid number.  Try again...")
+
+
+if __name__ == "__main__":
+    main()
