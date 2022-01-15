@@ -11,7 +11,7 @@ food_menu = []
 # {all recipes, preparation time}
 food_prep = {}
 
-FILE_NAME = "TestData"
+FILE_NAME = "TestDataKianAdrina"
 
 
 def initialize():
@@ -53,7 +53,7 @@ def initialize():
 
 def start():
     os.system("cls")
-    print("Loading... Please Wait")
+    print("Loading Food Recipes... Please Wait")
     start_time = time.time()
     initialize()
     print(f"File Loaded!\nTime = {time.time() - start_time}s")
