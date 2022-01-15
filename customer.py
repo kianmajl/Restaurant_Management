@@ -4,7 +4,7 @@ import datetime
 import time
 
 # file number
-MAP_NUMBER = 6
+MAP_NUMBER = 0
 # our heap which is a list of tuples (total time, table name) and number of them
 tables = []
 global number_of_tables
@@ -80,7 +80,7 @@ class Customer:
             for f, t in foods.items():
                 print("{food}\t\t{times}".format(food=f, times=t))
 
-            self.time_prep, t = 0, 0
+            self.time_prep, t = 0, 1
 
             try:
                 print()

@@ -90,7 +90,7 @@ def main():
             selection = int(input("\nPlease enter a number: "))
 
             if selection == 1:
-                print("Food\tTime")
+                print("\nFood\tTime")
                 print("-------------------")
 
                 for foods in food_menu:
@@ -99,7 +99,7 @@ def main():
                 input("\nPress Enter to go back to menu")
 
             elif selection == 2:
-                print("Food\tTime")
+                print("\nFood\tTime")
                 print("-------------------")
                 for foods in food_menu:
                     print(foods, "\t", food_prep[foods])
@@ -163,7 +163,7 @@ def main():
                 input("\nPress Enter to go back to menu")
 
             elif selection == 4:
-                print("Food\tTime")
+                print("\nFood\tTime")
                 print("-------------------")
                 for foods in food_menu:
                     print(foods, "\t", food_prep[foods])
@@ -183,14 +183,14 @@ def main():
                 input("\nPress Enter to go back to menu")
 
             elif selection == 5:
-                print("Food\tTime")
+                print("\nFood\tTime")
                 print("-------------------")
                 maximum = max(main_food_prep, key=main_food_prep.get)
                 print(maximum, "\t", main_food_prep[maximum])
                 input("\nPress Enter to go back to menu")
 
             elif selection == 6:
-                print("Food\tTime")
+                print("\nFood\tTime")
                 print("-------------------")
                 minimum = min(main_food_prep, key=main_food_prep.get)
                 print(minimum, "\t", main_food_prep[minimum])
