@@ -75,13 +75,24 @@ class Customer:
 
         try:
             # get food
-            print("Food name\tTime")
-            for f, t in foods:
-                print("{food}\t{times}".format(food=f, times=t))
+            print("\n------------Menu------------")
+            print("\nFood name\tTime")
+            for f, t in foods.items():
+                print("{food}\t\t{times}".format(food=f, times=t))
 
-            # t = int(input("\n---> Enter the number of food you want to order: "))
-            self.time_eat, self.time_prep = int(input("\n---> Enter your eating time: ")), int(
-                input("\n---> Enter the preparation time: "))
+            t = int(input("\n---> Enter the number of food you want to order: "))
+
+            self.time_prep = 0
+
+            try:
+                for i in range(t):
+                    self.time_prep += foods[input(f"Enter Food {i + 1} : ")]
+            except KeyError:
+                print("Enter a valid food!")
+                os.system("cls")
+                return
+
+            self.time_eat = int(input("\n---> Enter your eating time: "))
             # calculate total time
             self.time_t = self.time_eat + self.time_prep
 
@@ -173,7 +184,7 @@ def main():
 
     while True:
         os.system("cls")
-        print("\n-------------------- Welcome to Kharkhon Bashi Restaurant ---------------------\n")
+        print("\n-------------------- Welcome to Kharkhon Bashi Restaurant | Usual-Order ---------------------\n")
         print("\n1. Order Food\n")
         print("\n2. Show Tables\n")
         print("\n3. Exit\n")
@@ -203,7 +214,7 @@ def main():
             elif selection == 3:
                 print("GoodBye!")
                 print("by: Adrina & Kian")
-                exit(0)
+                break
 
         except ValueError:
             input("\nOops!  That was no valid number.  Try again...")
