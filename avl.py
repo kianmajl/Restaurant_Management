@@ -1,3 +1,5 @@
+import os
+
 
 class Person(object):
     def __init__(self, key, name=""):
@@ -111,6 +113,7 @@ class AVLTree(object):
             return self.left_rotate(root)
 
         self.size += 1
+
         return root
 
     def delete_node(self, root, key):
@@ -154,19 +157,24 @@ class AVLTree(object):
             return self.left_rotate(root)
 
         self.size -= 1
+
         return root
 
 
 def main():
     customers, root_tree, customers_num = AVLTree(), None, dict()
+    os.system("cls")
 
+    print("\n-------------------- Welcome to Kharkhon Bashi Restaurant | Party-Order ---------------------\n")
     while True:
+
         try:
-            orders = input("Please Enter Your Order: ").split()
+            orders = input("\nPlease Enter Your Order: ").split()
 
             if orders[0] == "Insert":
                 customers_num[orders[1]] = int(orders[2])
                 root_tree = customers.insert(root_tree, int(orders[2]), orders[1])
+                print("\nSuccessfully added!")
 
             elif orders[0] == "Search":
                 try:
@@ -178,6 +186,7 @@ def main():
             elif orders[0] == "Delete":
                 # noinspection PyTypeChecker
                 root_tree = customers.delete_node(root_tree, customers_num[orders[1]])
+                print("Successfully deleted!")
 
             elif orders[0] == "Print":
                 customers.print_2d(root_tree, [customers.size])

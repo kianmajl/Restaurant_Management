@@ -90,14 +90,19 @@ def main():
             selection = int(input("\nPlease enter a number: "))
 
             if selection == 1:
+                print("Food\tTime")
+                print("-------------------")
+
                 for foods in food_menu:
-                    print(foods, food_prep[foods])
+                    print(foods, "\t", food_prep[foods])
 
                 input("\nPress Enter to go back to menu")
 
             elif selection == 2:
+                print("Food\tTime")
+                print("-------------------")
                 for foods in food_menu:
-                    print(foods, food_prep[foods])
+                    print(foods, "\t", food_prep[foods])
 
                 food_name_to_delete = input("Enter a food name to delete: ")
 
@@ -148,17 +153,20 @@ def main():
                 main_food_rec = dict(filter(lambda l: l[0] in food_menu, foods_recipes.items()))
 
             elif selection == 3:
+                print()
                 for fdr in food_menu:
                     try:
-                        print(fdr, *graphlib.TopologicalSorter(foods_recipes[fdr]).static_order())
+                        print(fdr, "--->", *graphlib.TopologicalSorter(foods_recipes[fdr]).static_order())
                     except graphlib.CycleError as gce:
                         print("Cycle detected!", gce)
 
                 input("\nPress Enter to go back to menu")
 
             elif selection == 4:
+                print("Food\tTime")
+                print("-------------------")
                 for foods in food_menu:
-                    print(foods, food_prep[foods])
+                    print(foods, "\t", food_prep[foods])
 
                 food_name = input("Enter a food name: ")
                 req = input("Enter a line of requirement: ").split()
@@ -175,17 +183,20 @@ def main():
                 input("\nPress Enter to go back to menu")
 
             elif selection == 5:
+                print("Food\tTime")
+                print("-------------------")
                 maximum = max(main_food_prep, key=main_food_prep.get)
-                print(maximum, main_food_prep[maximum])
+                print(maximum, "\t", main_food_prep[maximum])
                 input("\nPress Enter to go back to menu")
 
             elif selection == 6:
+                print("Food\tTime")
+                print("-------------------")
                 minimum = min(main_food_prep, key=main_food_prep.get)
-                print(minimum, main_food_prep[minimum])
+                print(minimum, "\t", main_food_prep[minimum])
                 input("\nPress Enter to go back to menu")
 
             elif selection == 7:
-
                 maximum_rec_count, maximum_rec_names = 0, []
 
                 for k, v in main_food_rec.items():
@@ -200,7 +211,7 @@ def main():
                         maximum_rec_names.append(k)
 
                 for name in maximum_rec_names:
-                    print(name)
+                    print("\nFood name ---> ", name)
                     print(*graphlib.TopologicalSorter(foods_recipes[name]).static_order())
 
                 input("\nPress Enter to go back to menu")
