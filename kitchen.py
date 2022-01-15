@@ -61,7 +61,7 @@ def start():
 
 
 def main():
-    start()
+    # start()
     os.system("cls")
     print("Please wait for seconds")
     main_food_prep = dict(filter(lambda l: l[0] in food_menu, food_prep.items()))

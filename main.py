@@ -17,14 +17,14 @@ if __name__ == "__main__":
         print("\n4. Exit")
 
         try:
-            selection = int(input("\n Please enter a number: "))
+            selection = int(input("\nPlease enter a number: "))
 
             if selection == 1:
                 customer.start(main_food_prep)
                 customer.main()
 
             elif selection == 2:
-                pass
+                avl.main()
 
             elif selection == 3:
                 kitchen.main()

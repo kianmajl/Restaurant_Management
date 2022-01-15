@@ -157,7 +157,7 @@ class AVLTree(object):
         return root
 
 
-if __name__ == "__main__":
+def main():
     customers, root_tree, customers_num = AVLTree(), None, dict()
 
     while True:
@@ -182,5 +182,12 @@ if __name__ == "__main__":
             elif orders[0] == "Print":
                 customers.print_2d(root_tree, [customers.size])
 
+            elif orders[0] == "Back" or orders[0] == "Exit":
+                break
+
         except IndexError:
             print("Enter a valid order")
+
+
+if __name__ == "__main__":
+    main()
