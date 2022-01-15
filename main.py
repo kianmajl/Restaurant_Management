@@ -6,6 +6,8 @@ import os
 if __name__ == "__main__":
 
     kitchen.start()
+    os.system("cls")
+    print("Please wait for seconds")
     main_food_prep = dict(filter(lambda l: l[0] in kitchen.food_menu, kitchen.food_prep.items()))
 
     while True:
