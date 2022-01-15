@@ -13,7 +13,8 @@ if __name__ == "__main__":
         print("\n-------------------- Welcome to Kharkhon Bashi Restaurant ---------------------\n")
         print("\n1. Usual mood reservation")
         print("\n2. Party mood reservation")
-        print("\n3. Exit")
+        print("\n3. Go to kitchen management")
+        print("\n4. Exit")
 
         try:
             selection = int(input("\n Please enter a number: "))
@@ -24,9 +25,11 @@ if __name__ == "__main__":
 
             elif selection == 2:
                 pass
-                # kitchen.main()
 
             elif selection == 3:
+                kitchen.main()
+
+            elif selection == 4:
                 print("Have Fun!")
                 print("\nby: Kian & Adrina")
                 exit(0)

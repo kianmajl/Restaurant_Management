@@ -187,7 +187,7 @@ def main():
         print("\n-------------------- Welcome to Kharkhon Bashi Restaurant | Usual-Order ---------------------\n")
         print("\n1. Order Food\n")
         print("\n2. Show Tables\n")
-        print("\n3. Exit\n")
+        print("\n3. Back to menu\n")
 
         try:
             selection = int(input("\nPlease enter a number: "))
