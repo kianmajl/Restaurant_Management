@@ -21,12 +21,14 @@ class AVLTree(object):
             return 0
         return root.height
 
+    # difference between the height of the left subtree and that of the right subtree of that node
     @staticmethod
     def get_balance(root):
         if not root:
             return 0
         return AVLTree.get_height(root.left) - AVLTree.get_height(root.right)
 
+    # the arrangements are first shifted to the left and then to the right.
     @staticmethod
     def left_rotate(z):
         y = z.right
@@ -37,6 +39,7 @@ class AVLTree(object):
         y.height = 1 + max(AVLTree.get_height(y.left), AVLTree.get_height(y.right))
         return y
 
+    # the arrangements are first shifted to the right and then to the left.
     @staticmethod
     def right_rotate(z):
         y = z.left
@@ -47,6 +50,7 @@ class AVLTree(object):
         y.height = 1 + max(AVLTree.get_height(y.left), AVLTree.get_height(y.right))
         return y
 
+    # do a binary search in tree
     @staticmethod
     def search(root, key):
         if not root:
@@ -100,6 +104,7 @@ class AVLTree(object):
 
         root.height = max(self.get_height(root.left), self.get_height(root.right)) + 1
 
+        # balance the tree
         balance_factor = self.get_balance(root)
 
         if balance_factor > 1:
@@ -142,10 +147,12 @@ class AVLTree(object):
         if root is None:
             return root
 
+        # update the balance factor of nodes
         root.height = 1 + max(self.get_height(root.left), self.get_height(root.right))
 
         balance_factor = self.get_balance(root)
 
+        # balance the tree
         if balance_factor > 1:
             if self.get_balance(root.left) < 0:
                 root.left = self.left_rotate(root.left)
