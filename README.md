@@ -7,6 +7,6 @@
 - **Graph and Topological Sort**
   - To indicate recipes
 
-Contributers:
+Contributors:
 + [Kian Majlessi](https://github.com/kianmajl)
 + [Adrina Ebrahimi](https://github.com/adrina-ei)
